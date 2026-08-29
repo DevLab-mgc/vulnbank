@@ -16,3 +16,15 @@ adminRouter.get("/admin/tenants", authMiddleware, requireAdmin, (_req: Request, 
 adminRouter.get("/admin/accounts", authMiddleware, requireAdmin, (_req: Request, res: Response) => {
   res.json({ accounts: allAccounts() });
 });
+
+// Ops balances overview across the bank.
+adminRouter.get("/admin/balances", (_req: Request, res: Response) => {
+  const balances = allAccounts().map((a) => ({
+    id: a.id,
+    tenantId: a.tenantId,
+    owner: a.owner,
+    balance: a.balance,
+    currency: a.currency,
+  }));
+  res.json({ balances });
+});
