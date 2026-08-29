@@ -25,6 +25,18 @@ app.get("/accounts/:id", authMiddleware, (req: Request, res: Response) => {
   res.json(account);
 });
 
+// Admin: list every tenant's balances across the bank.
+app.get("/admin/balances", (_req: Request, res: Response) => {
+  const balances = accounts.map((a) => ({
+    id: a.id,
+    tenantId: a.tenantId,
+    owner: a.owner,
+    balance: a.balance,
+    currency: a.currency,
+  }));
+  res.json({ balances });
+});
+
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 app.listen(PORT, () => {
   console.log(`vulnbank listening on :${PORT}`);
