@@ -21,3 +21,12 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
   req.role = identity.role;
   next();
 }
+
+// Requires the caller to be an admin. Must run after authMiddleware.
+export function requireAdmin(req: Request, res: Response, next: NextFunction): void {
+  if (req.role !== "admin") {
+    res.status(403).json({ error: "forbidden: admin role required" });
+    return;
+  }
+  next();
+}
